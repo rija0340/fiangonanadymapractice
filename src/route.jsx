@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/mambra',
-                element: <Mambra />
+                element: <Mambra />,
             },
         ]
     }

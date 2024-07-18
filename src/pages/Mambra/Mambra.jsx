@@ -8,33 +8,57 @@ export default function Mambra() {
     const familles = useFetchData("http://localhost:8000/apip/familles");
     const [toDisplay, setToDisplay] = useState('mambra');
     const [filteredData, setFilteredData] = useState([]);
+    const [nbByGenderFilter, setNbByGenderFilter] = useState(0);
+    // const [filters, setFilters] = useState({
+    //   sexe: '',
+    //   baptise: '',
+    // });
+
+    //gender filter 
     const [filters, setFilters] = useState({
-      sexe: '',
-      baptise: '',
-    });
+        gender: {
+            all: true,
+            male: false,
+            female: false,
+          },
+          baptism: {
+            all: true,
+            baptised: false,
+            unbaptised: false,
+          }
+    })
+
 
     useEffect(() => {
         // Apply filters when data or filters change
         const applyFilters = () => {
           let filtered = mambras;
-    
-          if (filters.sexe) {
-            filtered = filtered.filter(item => item.sexe === filters.sexe);
+            console.log('filters');
+            console.log(filters);
+            let genderFilter =  filters['gender'];
+            let baptismFilter =  filters['baptism'];
+          if (genderFilter.male && !genderFilter.female) {
+            filtered = filtered.filter(item => item.sexe === "masculin");
+          }
+          if (genderFilter.female && !genderFilter.male ) {
+            filtered = filtered.filter(item => item.sexe === "feminin");
           }
     
-          if (filters.baptise) {
-            filtered = filtered.filter(item => item.baptise === filters.baptise);
+          if (baptismFilter.baptised && !baptismFilter.unbaptised ) {
+            filtered = filtered.filter(item => item.baptise ==  true);
+          }
+          if (!baptismFilter.baptised && baptismFilter.unbaptised ) {
+            filtered = filtered.filter(item => item.baptise == false );
           }
     
           setFilteredData(filtered);
+          setNbByGenderFilter(filtered.length);
         };
-    
         applyFilters();
       }, [mambras, filters]);
 
-    console.log( familles);
 
-    const listeMambra = mambras.map((item)=> {
+    const listeMambra = filteredData.map((item)=> {
         return (<tr key={item.id}>
         <td>{item.nom}</td>
         <td>{item.prenom}</td>
@@ -45,7 +69,6 @@ export default function Mambra() {
 
     const listeFamille = familles.map((item)=> {
 
-        console.log(item);
         return (<tr key={item.id}>
         <td>{item.nom}</td>
         <td>{item.mambras.length}</td>
@@ -56,6 +79,50 @@ export default function Mambra() {
         </td>
         </tr>);
     });
+
+    const renderCheckboxes = (category) => (
+        Object.entries(filters[category]).map(([key, value]) => (
+          <label key={`${category}-${key}`}>
+            <input
+              type="checkbox"
+              name={key}
+              checked={value}
+              onChange={(e) => handleFilterChange(category, key, e.target.checked)}
+            />
+            {key.charAt(0).toUpperCase() + key.slice(1)}
+          </label>
+        ))
+      );
+      const handleFilterChange = (category, name, checked) => {
+        setFilters(prevFilters => {
+          const newCategoryFilters = { ...prevFilters[category] };
+    
+          if (name === 'all') {
+            Object.keys(newCategoryFilters).forEach(key => {
+              newCategoryFilters[key] = checked;
+            });
+          } else {
+            newCategoryFilters[name] = checked;
+            newCategoryFilters.all = Object.keys(newCategoryFilters)
+              .filter(key => key !== 'all')
+              .every(key => newCategoryFilters[key]);
+
+              //equivalent simplier statememnt 
+
+            //   if (category === 'gender') {
+            //     newCategoryFilters.all = newCategoryFilters.male && newCategoryFilters.female;
+            //   } else if (category === 'baptism') {
+            //     newCategoryFilters.all = newCategoryFilters.baptised && newCategoryFilters.unbaptised;
+            //   }
+          }
+    
+          return {
+            ...prevFilters,
+            [category]: newCategoryFilters
+          };
+        });
+      };
+
 
     return (
         <>
@@ -70,7 +137,17 @@ export default function Mambra() {
                     <li> Mambra par famille</li>
                 </ul>
 
-                <h3>Filtres</h3>
+                <h3>Filtres (nb: {nbByGenderFilter})</h3>
+                <div>
+                    <h4>Gender</h4>
+                    <div >
+                        {renderCheckboxes('gender')}
+                    </div>
+                    <h4>Baptism</h4>
+                        <div >
+                        {renderCheckboxes('baptism')}
+                    </div>
+                </div>
             </div>
                 
             </div>

@@ -15,6 +15,16 @@ export const router = createBrowserRouter([
             {
                 path: '/mambra',
                 element: <Mambra />,
+                children: [
+                    {
+                        path: '/mambra/liste',
+                        element: <Mambra />,
+                    },
+                    {
+                        path: '/mambra/nouveau',
+                        element: <Mambra />,
+                    },
+                ]
             },
         ]
     }

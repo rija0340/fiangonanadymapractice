@@ -9,11 +9,12 @@ const schema = yup.object().shape({
     prenom: yup.string().max(255, 'Prenom cannot exceed 255 characters'),
     sexe: yup.string().required('Sexe is required'),
     dateNaissance: yup.date().max(new Date(), 'Date cannot be in the future').nullable(),
-    trancheAge: yup.string().matches(/^\d+-\d+$/, 'Tranche d\'Age should be in the format "number-number"'),
+    trancheAge: yup.string().required('Tranche age is required'),
+    // trancheAge: yup.string().matches(/^\d+-\d+$/, 'Tranche d\'Age should be in the format "number-number"'),
     baptise: yup.boolean()
 });
 
-const MambraForm = ({ defaultValues }) => {
+const MambraForm = ({ defaultValues, handleSubmitData }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         defaultValues: defaultValues || {
@@ -27,7 +28,7 @@ const MambraForm = ({ defaultValues }) => {
     });
 
     const onSubmit = data => {
-        console.log(data);
+        handleSubmitData(data);
         // Here you would typically send the data to your backend API
     };
 
@@ -35,19 +36,19 @@ const MambraForm = ({ defaultValues }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <label htmlFor="nom">Nom:</label>
-                <input id="nom" {...register('nom')} />
+                <input className='form-control' id="nom" {...register('nom')} />
                 {errors.nom && <span>{errors.nom.message}</span>}
             </div>
 
             <div>
                 <label htmlFor="prenom">Prenom:</label>
-                <input id="prenom" {...register('prenom')} />
+                <input className='form-control' id="prenom" {...register('prenom')} />
                 {errors.prenom && <span>{errors.prenom.message}</span>}
             </div>
 
             <div>
                 <label htmlFor="sexe">Sexe:</label>
-                <select id="sexe" {...register('sexe')}>
+                <select className='form-control'  id="sexe" {...register('sexe')}>
                     <option value="">Select...</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -57,22 +58,32 @@ const MambraForm = ({ defaultValues }) => {
 
             <div>
                 <label htmlFor="dateNaissance">Date de Naissance:</label>
-                <input type="date" id="dateNaissance" {...register('dateNaissance')} />
+                <input className='form-control'  type="date" id="dateNaissance" {...register('dateNaissance')} />
                 {errors.dateNaissance && <span>{errors.dateNaissance.message}</span>}
             </div>
 
             <div>
                 <label htmlFor="trancheAge">Tranche d'Age:</label>
-                <input id="trancheAge" {...register('trancheAge')} />
+                <select className='form-control'  id="trancheAge" {...register('trancheAge')}>
+                    <option value="">Select...</option>
+                    <option value="0_2">0 à 2</option>
+                    <option value="3_4">3 à 4</option>
+                    <option value="5_12">5 à 12</option>
+                    <option value="13_15">13 à 15</option>
+                    <option value="16_18">16 à 18</option>
+                    <option value="19_35">19 à 35</option>
+                    <option value="35+">Plus de 35</option>
+                </select>
+
                 {errors.trancheAge && <span>{errors.trancheAge.message}</span>}
             </div>
 
             <div>
                 <label htmlFor="baptise">Baptise:</label>
-                <input type="checkbox" id="baptise" {...register('baptise')} />
+                <input  type="checkbox" id="baptise" {...register('baptise')} />
             </div>
 
-            <button type="submit">Submit</button>
+            <button className='btn btn-success' type="submit">Submit</button>
         </form>
     );
 };

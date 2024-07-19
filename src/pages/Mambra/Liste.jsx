@@ -1,9 +1,8 @@
 import { useFetchData } from "../../hooks/useFetchData";
 import { useState, useEffect } from "react";
-import MambraForm from "./MambraForm";
 
 
-export default function Mambra() {
+export default function Liste() {
 
   const mambras = useFetchData("http://localhost:8000/apip/mambras");
   const familles = useFetchData("http://localhost:8000/apip/familles");
@@ -178,9 +177,7 @@ export default function Mambra() {
                     {listeMambra}
                   </tbody>
                 </table>
-                <div>
-                  <MambraForm></MambraForm>
-                </div>
+
               </>
 
             ) : toDisplay == 'famille' ? (

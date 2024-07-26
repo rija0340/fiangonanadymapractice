@@ -4,6 +4,7 @@ import Homepage from "./pages/Homepage/Homepage";
 import Liste from "./pages/Mambra/Liste";
 import BaseMambra from "./pages/Mambra/BaseMambra";
 import Nouveau from "./pages/Mambra/Nouveau";
+import Edit from "./pages/Mambra/Edit";
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
                     {
                         path: '/mambra/nouveau',
                         element: <Nouveau />,
+                    },
+                    {
+                        path: '/mambra/:id/edit',
+                        element: <Edit />,
                     },
                 ]
             },

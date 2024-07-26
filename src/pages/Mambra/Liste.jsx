@@ -1,6 +1,6 @@
+import { NavLink } from "react-router-dom";
 import { useFetchData } from "../../hooks/useFetchData";
 import { useState, useEffect } from "react";
-
 
 export default function Liste() {
 
@@ -9,10 +9,7 @@ export default function Liste() {
   const [toDisplay, setToDisplay] = useState('mambra');
   const [filteredData, setFilteredData] = useState([]);
   const [nbByGenderFilter, setNbByGenderFilter] = useState(0);
-  // const [filters, setFilters] = useState({
-  //   sexe: '',
-  //   baptise: '',
-  // });
+
 
   //gender filter 
   const [filters, setFilters] = useState({
@@ -66,7 +63,7 @@ export default function Liste() {
       <td>{item.baptise ? 'yes' : 'no'}</td>
       <td>
         <div class="btn-group btn-group-sm">
-          <button type="button" class="btn btn-success">Edit</button>
+          <NavLink class="btn btn-success" to={ `../../mambra/${item.id}/edit` }> Edit </NavLink>
           <button type="button" class="btn btn-primary">Show</button>
           <button type="button" class="btn btn-danger">Delete</button>
         </div>

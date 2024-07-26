@@ -34,7 +34,6 @@ const MambraForm = ({ defaultValues, handleSubmitData }) => {
             trancheAge: '',
             baptise: false,
             famille:''
-
         }
     });
 

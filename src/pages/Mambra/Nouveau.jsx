@@ -1,8 +1,14 @@
 import FormMambra from "./Form/MambraForm";
+import { useFetchData } from "../../hooks/useFetchData";
+import React, { useState, useEffect } from 'react';
 const Nouveau = ()=>{
 
 
     const postDataMambra = async (mambraData) => {
+
+      console.log("mambraData");
+      console.log(mambraData);
+
         try {
             const response = await fetch('http://localhost:8000/apip/mambras', {
               method: 'POST',
@@ -14,6 +20,9 @@ const Nouveau = ()=>{
             });
         
             if (!response.ok) {
+              const errorBody = await response.text();
+              console.error('Response status:', response.status);
+              console.error('Response body:', errorBody);
               throw new Error('Network response was not ok');
             }
         

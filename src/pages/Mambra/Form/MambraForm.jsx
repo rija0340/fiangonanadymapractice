@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useFetchData } from '../../../hooks/useFetchData';
 
 // Define the validation schema
 const schema = yup.object().shape({
@@ -11,10 +12,18 @@ const schema = yup.object().shape({
     dateNaissance: yup.date().max(new Date(), 'Date cannot be in the future').nullable(),
     trancheAge: yup.string().required('Tranche age is required'),
     // trancheAge: yup.string().matches(/^\d+-\d+$/, 'Tranche d\'Age should be in the format "number-number"'),
-    baptise: yup.boolean()
+    baptise: yup.boolean(),
+    famille: yup.string().required('Famille required'),
 });
 
 const MambraForm = ({ defaultValues, handleSubmitData }) => {
+
+
+  const familles = useFetchData("http://localhost:8000/apip/familles");
+  
+  console.log("familles");
+  console.log(familles);
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         defaultValues: defaultValues || {
@@ -23,7 +32,9 @@ const MambraForm = ({ defaultValues, handleSubmitData }) => {
             sexe: '',
             dateNaissance: null,
             trancheAge: '',
-            baptise: false
+            baptise: false,
+            famille:''
+
         }
     });
 
@@ -50,8 +61,8 @@ const MambraForm = ({ defaultValues, handleSubmitData }) => {
                 <label htmlFor="sexe">Sexe:</label>
                 <select className='form-control'  id="sexe" {...register('sexe')}>
                     <option value="">Select...</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                    <option value="masculin">Male</option>
+                    <option value="feminin">Female</option>
                 </select>
                 {errors.sexe && <span>{errors.sexe.message}</span>}
             </div>
@@ -60,6 +71,19 @@ const MambraForm = ({ defaultValues, handleSubmitData }) => {
                 <label htmlFor="dateNaissance">Date de Naissance:</label>
                 <input className='form-control'  type="date" id="dateNaissance" {...register('dateNaissance')} />
                 {errors.dateNaissance && <span>{errors.dateNaissance.message}</span>}
+            </div>
+
+            <div>
+                <label htmlFor="famille">Famille</label>
+                <select className='form-control'  id="famille" {...register('famille')}>
+                <option value="">Sélectionner une famille</option>
+                {familles && familles.map((famille) => (
+                    <option key={famille.id} value={`/apip/familles/${famille.id}`}>
+                    {famille.nom}
+                    </option>
+                ))}
+                </select>
+                {errors.famille && <span>{errors.famille.message}</span>}
             </div>
 
             <div>

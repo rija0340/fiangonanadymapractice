@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 
 export default function Liste() {
 
-  const mambras = useFetchData("http://localhost:8000/apip/mambras");
-  const familles = useFetchData("http://localhost:8000/apip/familles");
+  const { data: mambras, loading: loadingMambra, error: errorMambra } = useFetchData("http://localhost:8000/apip/mambras");
+  const { data: familles, loading: loadingFamille, error: errorFamilles } = useFetchData("http://localhost:8000/apip/familles");
   const [toDisplay, setToDisplay] = useState('mambra');
   const [filteredData, setFilteredData] = useState([]);
   const [nbByGenderFilter, setNbByGenderFilter] = useState(0);
@@ -30,8 +30,6 @@ export default function Liste() {
     // Apply filters when data or filters change
     const applyFilters = () => {
       let filtered = mambras;
-      console.log('filters');
-      console.log(filters);
       let genderFilter = filters['gender'];
       let baptismFilter = filters['baptism'];
       if (genderFilter.male && !genderFilter.female) {
@@ -63,7 +61,7 @@ export default function Liste() {
       <td>{item.baptise ? 'yes' : 'no'}</td>
       <td>
         <div class="btn-group btn-group-sm">
-          <NavLink class="btn btn-success" to={ `../../mambra/${item.id}/edit` }> Edit </NavLink>
+          <NavLink class="btn btn-success" to={`../../mambra/${item.id}/edit`}> Edit </NavLink>
           <button type="button" class="btn btn-primary">Show</button>
           <button type="button" class="btn btn-danger">Delete</button>
         </div>
@@ -111,13 +109,6 @@ export default function Liste() {
           .filter(key => key !== 'all')
           .every(key => newCategoryFilters[key]);
 
-        //equivalent simplier statememnt 
-
-        //   if (category === 'gender') {
-        //     newCategoryFilters.all = newCategoryFilters.male && newCategoryFilters.female;
-        //   } else if (category === 'baptism') {
-        //     newCategoryFilters.all = newCategoryFilters.baptised && newCategoryFilters.unbaptised;
-        //   }
       }
 
       return {
@@ -126,6 +117,22 @@ export default function Liste() {
       };
     });
   };
+
+  const handleSearch = (e) => {
+    const search = e.target.value.toLowerCase();
+
+    const filtered = mambras.filter(item => {
+      if (item && (item.nom || item.prenom)) {
+        return (
+          (item.nom && item.nom.toLowerCase().includes(search)) ||
+          (item.prenom && item.prenom.toLowerCase().includes(search))
+        );
+      }
+      return false;
+    });
+
+    setFilteredData(filtered);
+  }
 
 
   return (
@@ -160,6 +167,10 @@ export default function Liste() {
           {toDisplay == 'mambra' ?
             (
               <>
+                <div class="d-flex justify-content-end">
+                  <div class="p-2 bd-highlight">Recherche</div>
+                  <div class="p-2 bd-highlight"><input type="text" onChange={handleSearch} className="form-control" /></div>
+                </div>
                 <table className="table">
                   <thead class="thead-dark">
                     <tr>

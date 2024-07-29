@@ -3,7 +3,7 @@ import { useFetchData } from "../../hooks/useFetchData";
 import { useState, useEffect } from "react";
 
 export default function Liste() {
-
+  console.log('render list');
   const { data: mambras, loading: loadingMambra, error: errorMambra } = useFetchData("http://localhost:8000/apip/mambras");
   const { data: familles, loading: loadingFamille, error: errorFamilles } = useFetchData("http://localhost:8000/apip/familles");
   const [toDisplay, setToDisplay] = useState('mambra');
@@ -22,7 +22,8 @@ export default function Liste() {
       all: true,
       baptised: false,
       unbaptised: false,
-    }
+    },
+    search : ""
   })
 
 
@@ -31,7 +32,24 @@ export default function Liste() {
     const applyFilters = () => {
       let filtered = mambras;
       let genderFilter = filters['gender'];
+      console.dir(filters);
       let baptismFilter = filters['baptism'];
+      let searchFilter = filters['search'];
+
+      if (searchFilter) {
+        filtered = filtered.filter(item => 
+          {
+            if (item && (item.nom || item.prenom)) {
+              return (
+                (item.nom && item.nom.toLowerCase().includes(searchFilter)) ||
+                (item.prenom && item.prenom.toLowerCase().includes(searchFilter))
+              );
+            }
+            return false;
+          }
+        );
+      }
+
       if (genderFilter.male && !genderFilter.female) {
         filtered = filtered.filter(item => item.sexe === "masculin");
       }
@@ -120,20 +138,13 @@ export default function Liste() {
 
   const handleSearch = (e) => {
     const search = e.target.value.toLowerCase();
-
-    const filtered = mambras.filter(item => {
-      if (item && (item.nom || item.prenom)) {
-        return (
-          (item.nom && item.nom.toLowerCase().includes(search)) ||
-          (item.prenom && item.prenom.toLowerCase().includes(search))
-        );
-      }
-      return false;
+    setFilters(prevFilters => {
+      return {
+        ...prevFilters,
+        search
+      };
     });
-
-    setFilteredData(filtered);
   }
-
 
   return (
     <>

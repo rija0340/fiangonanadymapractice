@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useFetchData } from '../../../hooks/useFetchData';
@@ -11,7 +11,10 @@ const schema = yup.object().shape({
     nom: yup.string().required('Nom is required').max(255, 'Nom cannot exceed 255 characters'),
     prenom: yup.string().max(255, 'Prenom cannot exceed 255 characters'),
     sexe: yup.string().required('Sexe is required'),
-    dateNaissance: yup.date().max(new Date(), 'Date cannot be in the future').nullable(),
+    dateNaissance: yup.date().transform((value, originalValue) => {
+        const date = new Date(originalValue);
+        return isNaN(date) ? undefined : date;
+    }).max(new Date(), 'Date cannot be in the future').nullable(),
     trancheAge: yup.string().required('Tranche age is required'),
     // trancheAge: yup.string().matches(/^\d+-\d+$/, 'Tranche d\'Age should be in the format "number-number"'),
     baptise: yup.boolean(),
@@ -23,10 +26,10 @@ const MambraForm = ({ defaultValues, handleSubmitData, id }) => {
 
     const { data: familles, loading: loadingFamille, error: errorFamille } = useFetchData("http://localhost:8000/apip/familles");
 
-    console.log("familles");
+    console.log("familfdsfsdfles");
     console.log(familles);
 
-    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset,control } = useForm({
         resolver: yupResolver(schema),
         defaultValues: defaultValues || {
             nom: '',
@@ -44,22 +47,22 @@ const MambraForm = ({ defaultValues, handleSubmitData, id }) => {
     useEffect(() => {
         if (mambra) {
             console.log("response.data", mambra);
-            const formattedData = {
-                ...mambra,
-                dateNaissance: formatDateForInput(mambra.dateNaissance)
-            };
-            console.log(formatDateForInput(mambra.dateNaissance));
-            reset(formattedData);
+            reset(mambra);
         }
     }, [mambra, reset]);
 
     const onSubmit = data => {
+        console.log("data");
+        console.log(data);
         handleSubmitData(data);
         // Here you would typically send the data to your backend API
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit((data) => {
+            console.log("handleSubmit callback triggered");
+            onSubmit(data);
+        })}>
             <div>
                 <label htmlFor="nom">Nom:</label>
                 <input className='form-control' id="nom" {...register('nom')} />
@@ -84,7 +87,24 @@ const MambraForm = ({ defaultValues, handleSubmitData, id }) => {
 
             <div>
                 <label htmlFor="dateNaissance">Date de Naissance:</label>
-                <input className='form-control' type="date" id="dateNaissance" value={watch('dateNaissance') || ''} {...register('dateNaissance')} />
+                <Controller
+                        name="dateNaissance"
+                        control={control}
+                        render={({ field }) => (
+                            <input
+                                className='form-control'
+                                type="date"
+                                id="dateNaissance"
+                                {...field}
+                                value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                                onChange={(e) => {
+                                    const date = new Date(e.target.value);
+                                    date.setUTCHours(12, 0, 0, 0);
+                                    field.onChange(date);
+                                }}
+                            />
+                        )}
+                    />
                 {errors.dateNaissance && <span>{errors.dateNaissance.message}</span>}
             </div>
 

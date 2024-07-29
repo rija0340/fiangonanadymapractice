@@ -1,22 +1,30 @@
-import FormMambra from "./Form/MambraForm";
-import { usePostDataMambra } from "../../hooks/useFetchData";
-const Nouveau = () => {
+import { useUpdateMambra } from "../../hooks/useFetchData";
+import { useNavigate } from "react-router-dom";
+import MambraForm from "./Form/MambraForm";
+// import { toast } from 'react-toastify';
 
+const Nouveau = () => {
+// const navigate = useNavigate();
   const handleSubmitData = async (data) => {
+    console.log("data", data);
     try {
-      const newMambra = await usePostDataMambra(data);
+      const newMambra = await useUpdateMambra(data);
       console.log('New Mambra created:', newMambra);
       // Handle successful creation (e.g., show a success message, redirect, etc.)
+      // toast.success('User created successfully!');
+      // navigate("/mambras/liste");
     } catch (error) {
       // Handle errors (e.g., show an error message)
+      //show error 
+      // toast.error('Error creating user');
+      console.log(error);
     }
   }
 
   return (
     <>
       <h1>nouveau mambra </h1>
-
-      <FormMambra handleSubmitData={handleSubmitData} />
+      <MambraForm handleSubmitData={handleSubmitData} />
     </>
   )
 }

@@ -4,28 +4,31 @@ import { useState, useEffect } from "react";
 
 export default function Liste() {
   console.log('render list');
-  const { data: mambras, loading: loadingMambra, error: errorMambra } = useFetchData("http://localhost:8000/apip/mambras");
-  const { data: familles, loading: loadingFamille, error: errorFamilles } = useFetchData("http://localhost:8000/apip/familles");
+    //gender filter 
+    const [filters, setFilters] = useState({
+      gender: {
+        all: true,
+        male: false,
+        female: false,
+      },
+      baptism: {
+        all: true,
+        baptised: false,
+        unbaptised: false,
+      },
+      search : ""
+    })
+
+    const [nameFilter, setNameFilter] = useState({
+      prenom : ""
+    });
+
+
+  const { data: mambras, loading: loadingMambra, error: errorMambra } = useFetchData("http://localhost:8000/apip/mambras",nameFilter);
+  const { data: familles, loading: loadingFamille, error: errorFamilles } = useFetchData("http://localhost:8000/apip/familles",filters);
   const [toDisplay, setToDisplay] = useState('mambra');
   const [filteredData, setFilteredData] = useState([]);
   const [nbByGenderFilter, setNbByGenderFilter] = useState(0);
-
-
-  //gender filter 
-  const [filters, setFilters] = useState({
-    gender: {
-      all: true,
-      male: false,
-      female: false,
-    },
-    baptism: {
-      all: true,
-      baptised: false,
-      unbaptised: false,
-    },
-    search : ""
-  })
-
 
   useEffect(() => {
     // Apply filters when data or filters change
@@ -138,12 +141,21 @@ export default function Liste() {
 
   const handleSearch = (e) => {
     const search = e.target.value.toLowerCase();
-    setFilters(prevFilters => {
+    // setFilters(prevFilters => {
+    //   return {
+    //     ...prevFilters,
+    //     search
+    //   };
+    // });
+
+
+    setNameFilter(prevNameFilter => {
       return {
-        ...prevFilters,
-        search
+        ...prevNameFilter,
+        nom : search
       };
     });
+
   }
 
   return (

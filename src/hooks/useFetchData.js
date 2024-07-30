@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 
-export function useFetchData(url) {
+export function useFetchData(url, searchParams) {
+
+    console.log("searchParams");
+    console.log(searchParams);
+
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -10,7 +14,10 @@ export function useFetchData(url) {
         async function fetchData() {
             setLoading(true);
             try {
-                const response = await fetch(url);
+
+                const queryString = new URLSearchParams(searchParams).toString();
+                const fullUrl = `${url}?${queryString}`;
+                const response = await fetch(fullUrl);
                 console.log(response);
                 if (response.ok && !cancel) {
                     const data = await response.json();
@@ -38,7 +45,7 @@ export function useFetchData(url) {
 
         fetchData();
         return () => (cancel = true);
-    }, [url])
+    }, [url,searchParams])
 
     return { data, loading, error };
 

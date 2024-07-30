@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 
 
-export function useFetchData(url, searchParams) {
-
-    console.log("searchParams");
-    console.log(searchParams);
+export function useFetchData(url, searchParams = null) {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -14,15 +11,23 @@ export function useFetchData(url, searchParams) {
         async function fetchData() {
             setLoading(true);
             try {
+                let fullUrl = "";
+                if (searchParams != null) {
+                    const queryString = new URLSearchParams(searchParams).toString();
+                    fullUrl = `${url}?${queryString}`;
+                } else {
+                    fullUrl = url;
+                }
 
-                const queryString = new URLSearchParams(searchParams).toString();
-                const fullUrl = `${url}?${queryString}`;
+                console.log("searchParams");
+                console.log(searchParams);
+
+                console.log("fullUrl");
+                console.log(fullUrl);
+
                 const response = await fetch(fullUrl);
-                console.log(response);
                 if (response.ok && !cancel) {
                     const data = await response.json();
-                    console.log('data ndray ity');
-                    console.log(data);
                     // Array.isArray(data['hydra:member']) ? setData((x)=> [...x,...data['hydra:member']]) : setData((x)=> [...x,data['hydra:member']])
                     if (Array.isArray(data['hydra:member'])) {
                         // C'est une collection
@@ -45,19 +50,18 @@ export function useFetchData(url, searchParams) {
 
         fetchData();
         return () => (cancel = true);
-    }, [url,searchParams])
+    }, [url, searchParams])
 
     return { data, loading, error };
 
 }
 
 export const useUpdateMambra = async (mambraData, id = null) => {
-    console.log("mambraData:", mambraData);
 
-    const url = id 
+    const url = id
         ? `http://localhost:8000/apip/mambras/${id}`
         : 'http://localhost:8000/apip/mambras';
-    
+
     const method = id ? 'PUT' : 'POST';
 
     try {
@@ -78,9 +82,6 @@ export const useUpdateMambra = async (mambraData, id = null) => {
         }
 
         const data = await response.json();
-
-    console.log('ity ny reponse avy any');
-    console.log(data);
 
         return data;
     } catch (error) {

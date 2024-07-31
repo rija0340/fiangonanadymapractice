@@ -5,11 +5,12 @@ import MambraForm from "./Form/MambraForm";
 
 const Nouveau = () => {
 // const navigate = useNavigate();
-  const handleSubmitData = async (data) => {
+  const handleSubmit = async (data) => {
     console.log("data", data);
     try {
       const newMambra = await useUpdateMambra(data);
       console.log('New Mambra created:', newMambra);
+      alert('eto za');
       // Handle successful creation (e.g., show a success message, redirect, etc.)
       // toast.success('User created successfully!');
       // navigate("/mambras/liste");
@@ -24,7 +25,7 @@ const Nouveau = () => {
   return (
     <>
       <h1>nouveau mambra </h1>
-      <MambraForm handleSubmitData={handleSubmitData} />
+      <MambraForm handleSubmitData={handleSubmit} />
     </>
   )
 }

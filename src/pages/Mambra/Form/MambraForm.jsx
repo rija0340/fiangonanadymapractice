@@ -21,8 +21,7 @@ const schema = yup.object().shape({
     famille: yup.string().required('Famille required'),
 });
 
-const MambraForm = ({ defaultValues, handleSubmitData, id }) => {
-
+const MambraForm = ({ handleSubmitData, id = null }) => {
 
     const { data: familles, loading: loadingFamille, error: errorFamille } = useFetchData("http://localhost:8000/apip/familles");
 
@@ -31,7 +30,7 @@ const MambraForm = ({ defaultValues, handleSubmitData, id }) => {
 
     const { register, handleSubmit, formState: { errors }, reset,control } = useForm({
         resolver: yupResolver(schema),
-        defaultValues: defaultValues || {
+        defaultValues: {
             nom: '',
             prenom: '',
             sexe: '',
@@ -51,18 +50,8 @@ const MambraForm = ({ defaultValues, handleSubmitData, id }) => {
         }
     }, [mambra, reset]);
 
-    const onSubmit = data => {
-        console.log("data");
-        console.log(data);
-        handleSubmitData(data);
-        // Here you would typically send the data to your backend API
-    };
-
     return (
-        <form onSubmit={handleSubmit((data) => {
-            console.log("handleSubmit callback triggered");
-            onSubmit(data);
-        })}>
+        <form onSubmit={handleSubmit(handleSubmitData)}>
             <div>
                 <label htmlFor="nom">Nom:</label>
                 <input className='form-control' id="nom" {...register('nom')} />

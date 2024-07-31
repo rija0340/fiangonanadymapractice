@@ -19,12 +19,6 @@ export function useFetchData(url, searchParams = null) {
                     fullUrl = url;
                 }
 
-                console.log("searchParams");
-                console.log(searchParams);
-
-                console.log("fullUrl");
-                console.log(fullUrl);
-
                 const response = await fetch(fullUrl);
                 if (response.ok && !cancel) {
                     const data = await response.json();
@@ -50,14 +44,15 @@ export function useFetchData(url, searchParams = null) {
 
         fetchData();
         return () => (cancel = true);
-    }, [url, searchParams])
+    }, [searchParams])
 
     return { data, loading, error };
 
 }
 
 export const useUpdateMambra = async (mambraData, id = null) => {
-
+alert('ato');
+    
     const url = id
         ? `http://localhost:8000/apip/mambras/${id}`
         : 'http://localhost:8000/apip/mambras';
@@ -73,6 +68,7 @@ export const useUpdateMambra = async (mambraData, id = null) => {
             },
             body: JSON.stringify(mambraData)
         });
+        alert("eto ambany ndray tsika");
 
         if (!response.ok) {
             const errorBody = await response.text();

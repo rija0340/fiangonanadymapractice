@@ -23,7 +23,7 @@ export default function Liste() {
     prenom: "",
     sexe: "",
     baptise: "",
-    trancheAge: ""
+    trancheAge: []
   });
 
 
@@ -166,9 +166,16 @@ export default function Liste() {
     </>
   )
 
-  const handleTrancheAgeChange = () => {
-
-  }
+  const handleTrancheAgeChange = (event) => {
+    console.log("filters");
+    const { value, checked } = event.target;
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      trancheAge: checked
+        ? [...prevFilters.trancheAge, value]
+        : prevFilters.trancheAge.filter(age => age !== value)
+    }));
+  };
 
   return (
     <>

@@ -11,12 +11,22 @@ export function useFetchData(url, searchParams = null) {
         async function fetchData() {
             setLoading(true);
             try {
-                let fullUrl = "";
-                if (searchParams != null) {
-                    const queryString = new URLSearchParams(searchParams).toString();
-                    fullUrl = `${url}?${queryString}`;
-                } else {
-                    fullUrl = url;
+                let fullUrl = url;
+                if (searchParams) {
+                    const queryParams = new URLSearchParams();
+
+                    for (const [key, value] of Object.entries(searchParams)) {
+                        if (key === 'trancheAge' && Array.isArray(value)) {
+                            value.forEach(age => queryParams.append('trancheAge[]', age));
+                        } else if (value !== '') {
+                            queryParams.append(key, value);
+                        }
+                    }
+
+                    const queryString = queryParams.toString();
+                    if (queryString) {
+                        fullUrl += `?${queryString}`;
+                    }
                 }
 
                 const response = await fetch(fullUrl);

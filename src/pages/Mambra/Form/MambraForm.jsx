@@ -42,10 +42,8 @@ const MambraForm = ({ handleSubmitData, id = null }) => {
     });
 
     const { data: mambra, loading: loading, error: error } = useFetchData(id ? `http://localhost:8000/apip/mambras/${id}` : null);
-
     useEffect(() => {
-        if (mambra) {
-            console.log("response.data", mambra);
+        if (!Array.isArray(mambra)) {
             reset(mambra);
         }
     }, [mambra, reset]);

@@ -30,48 +30,14 @@ export default function Liste() {
   const { data: mambras, loading: loadingMambra, error: errorMambra } = useFetchData("http://localhost:8000/apip/mambras", filters);
   const { data: familles, loading: loadingFamille, error: errorFamilles } = useFetchData("http://localhost:8000/apip/familles");
   const [toDisplay, setToDisplay] = useState('mambra');
-  const [nbByGenderFilter, setNbByGenderFilter] = useState(0);
 
-  // useEffect(() => {
-  //   // Apply filters when data or filters change
-  //   const applyFilters = () => {
-  //     let filtered = mambras;
-  //     let genderFilter = filters['gender'];
-  //     let baptismFilter = filters['baptism'];
-  //     let searchFilter = filters['search'];
-
-  //     if (searchFilter) {
-  //       filtered = filtered.filter(item => {
-  //         if (item && (item.nom || item.prenom)) {
-  //           return (
-  //             (item.nom && item.nom.toLowerCase().includes(searchFilter)) ||
-  //             (item.prenom && item.prenom.toLowerCase().includes(searchFilter))
-  //           );
-  //         }
-  //         return false;
-  //       }
-  //       );
-  //     }
-
-  //     if (genderFilter.male && !genderFilter.female) {
-  //       filtered = filtered.filter(item => item.sexe === "masculin");
-  //     }
-  //     if (genderFilter.female && !genderFilter.male) {
-  //       filtered = filtered.filter(item => item.sexe === "feminin");
-  //     }
-
-  //     if (baptismFilter.baptised && !baptismFilter.unbaptised) {
-  //       filtered = filtered.filter(item => item.baptise == true);
-  //     }
-  //     if (!baptismFilter.baptised && baptismFilter.unbaptised) {
-  //       filtered = filtered.filter(item => item.baptise == false);
-  //     }
-
-  //     setFilteredData(filtered);
-  //     setNbByGenderFilter(filtered.length);
-  //   };
-  //   applyFilters();
-  // }, [mambras, filters]);
+  const trancheAgeOptions = [
+    { value: "0_5", label: "0-5" },
+    { value: "6_12", label: "6-12" },
+    { value: "13_18", label: "13-18" },
+    { value: "19_35", label: "19-35" },
+    { value: "35+", label: "35+" },
+  ];
 
   const listeMambra = mambras.map((item) => {
     return (<tr key={item.id}>
@@ -83,7 +49,8 @@ export default function Liste() {
         <div class="btn-group btn-group-sm">
           <NavLink class="btn btn-success" to={`../../mambra/${item.id}/edit`}> Edit </NavLink>
           <button type="button" class="btn btn-primary">Show</button>
-          <button type="button" class="btn btn-danger">Delete</button>
+          {/* <button type="button" class="btn btn-danger">Delete</button> */}
+          <NavLink class="btn btn-danger" to={`../../mambra/${item.id}/delete`}> Delete </NavLink>
         </div>
       </td>
     </tr>);
@@ -182,6 +149,27 @@ export default function Liste() {
     </>
   )
 
+  const renderTrancheAgeFilter = () => (
+    <>
+      <div>
+        {trancheAgeOptions.map((option) => (
+          <label key={option.value}>
+            <input
+              type="checkbox"
+              value={option.value}
+              onChange={handleTrancheAgeChange}
+            />{" "}
+            {option.label}
+          </label>
+        ))}
+      </div>
+    </>
+  )
+
+  const handleTrancheAgeChange = () => {
+
+  }
+
   return (
     <>
       <div className="row">
@@ -204,6 +192,11 @@ export default function Liste() {
               <h4>Baptism</h4>
               <div >
                 {renderBaptiseRadio()}
+              </div>
+
+              <h4>Tranche d'age</h4>
+              <div >
+                {renderTrancheAgeFilter()}
               </div>
             </div>
           </div>

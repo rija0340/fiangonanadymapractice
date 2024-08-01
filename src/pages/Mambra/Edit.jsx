@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Edit = () => {
-const navigate = useNavigate();
+    const navigate = useNavigate();
     //get params here
     const { id } = useParams();
 

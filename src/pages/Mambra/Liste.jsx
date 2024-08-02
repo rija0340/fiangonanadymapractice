@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useFetchData } from "../../hooks/useFetchData";
 import { useState, useEffect } from "react";
+import ExportPDF from "../../utils/ExportPDF";
 
 export default function Liste() {
   //gender filter 
@@ -32,9 +33,11 @@ export default function Liste() {
   const [toDisplay, setToDisplay] = useState('mambra');
 
   const trancheAgeOptions = [
-    { value: "0_5", label: "0-5" },
-    { value: "6_12", label: "6-12" },
-    { value: "13_18", label: "13-18" },
+    { value: "0_2", label: "0-2" },
+    { value: "3_4", label: "3-4" },
+    { value: "5_12", label: "5-12" },
+    { value: "13_15", label: "13-15" },
+    { value: "16_18", label: "16-18" },
     { value: "19_35", label: "19-35" },
     { value: "35+", label: "35+" },
   ];
@@ -75,7 +78,7 @@ export default function Liste() {
     setFilters(prevNameFilter => {
       return {
         ...prevNameFilter,
-        nom: search
+        prenom: search
       };
     });
   }
@@ -205,6 +208,8 @@ export default function Liste() {
               <div >
                 {renderTrancheAgeFilter()}
               </div>
+
+              <button className="btn btn-success"  onClick={()=>ExportPDF(mambras)} > Exporter </button>
             </div>
           </div>
 

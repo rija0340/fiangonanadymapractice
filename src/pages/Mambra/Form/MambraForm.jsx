@@ -25,9 +25,6 @@ const MambraForm = ({ handleSubmitData, id = null }) => {
 
     const { data: familles, loading: loadingFamille, error: errorFamille } = useFetchData("http://localhost:8000/apip/familles");
 
-    console.log("familfdsfsdfles");
-    console.log(familles);
-
     const { register, handleSubmit, formState: { errors }, reset,control } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {

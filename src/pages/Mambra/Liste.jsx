@@ -24,7 +24,8 @@ export default function Liste() {
     prenom: "",
     sexe: "",
     baptise: "",
-    trancheAge: []
+    trancheAge: [],
+    orderByName : ""
   });
 
 
@@ -103,6 +104,17 @@ export default function Liste() {
     });
   }
 
+  const handleOrderByNameChange = (e) =>{
+
+    const orderByName = e.target.value;
+    setFilters(prevFilters => {
+      return {
+        ...prevFilters,
+        orderByName
+      };
+    });
+  }
+
 
   const renderGenderRadio = () => (
     <>
@@ -169,6 +181,20 @@ export default function Liste() {
     </>
   )
 
+  const renderOrderByPrenom = () => (
+
+    <>
+      
+      <select className='form-control' onChange={handleOrderByNameChange}>
+        <option value="">Select...</option>
+        <option value="asc">Ascendant</option>
+        <option value="desc">Descendant</option>
+      </select>
+
+    </>
+
+    )
+
   const handleTrancheAgeChange = (event) => {
     console.log("filters");
     const { value, checked } = event.target;
@@ -207,6 +233,10 @@ export default function Liste() {
               <h4>Tranche d'age</h4>
               <div >
                 {renderTrancheAgeFilter()}
+              </div>
+              <div className="mt-3 mb-3">
+              <h4>Order by prénom</h4>
+              {renderOrderByPrenom()}
               </div>
 
               <button className="btn btn-success"  onClick={()=>ExportPDF(mambras)} > Exporter </button>

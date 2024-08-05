@@ -12,20 +12,25 @@ export function useFetchData(url, searchParams = null) {
             setLoading(true);
             try {
                 let fullUrl = url;
+                    fullUrl = fullUrl+'?';
                 if (searchParams) {
                     const queryParams = new URLSearchParams();
 
                     for (const [key, value] of Object.entries(searchParams)) {
                         if (key === 'trancheAge' && Array.isArray(value)) {
                             value.forEach(age => queryParams.append('trancheAge[]', age));
-                        } else if (value !== '') {
-                            queryParams.append(key, value);
+                        }else if (key === 'orderByName') {
+                            fullUrl += `order[prenom]=${value}`;
+                        } 
+                        else if (value !== '') {
+                            fullUrl += `&${key}=${value}`;
+                            // queryParams.append(key, value);
                         }
                     }
 
                     const queryString = queryParams.toString();
                     if (queryString) {
-                        fullUrl += `?${queryString}`;
+                        fullUrl += `&?${queryString}`;
                     }
                 }
 

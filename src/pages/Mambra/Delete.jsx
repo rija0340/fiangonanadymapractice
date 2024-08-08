@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useDeleteMambra } from "../../hooks/useFetchData";
+import { useDeleteResource } from "../../hooks/useDeleteResource";
 const Delete = () => {
 
     const { id } = useParams();

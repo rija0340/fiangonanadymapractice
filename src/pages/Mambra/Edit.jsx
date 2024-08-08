@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useUpdateMambra } from "../../hooks/useFetchData";
+import { useUpdateResource } from "../../hooks/useUpdateResource";
 import FormMambra from "./Form/MambraForm";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,9 @@ const Edit = () => {
     const { id } = useParams();
 
     const handleSubmitData = async (data) => {
+        let url  = "http://localhost:8000/apip/mambras";
         try {
-            const editedMambra = await useUpdateMambra(data, id);
-            console.log('Edited Mambra :', editedMambra);
+            const editedMambra = await useUpdateResource(data,url, id);
             toast.success('User modified successfully!');
             navigate("/mambra/liste");
             // Handle successful creation (e.g., show a success message, redirect, etc.)

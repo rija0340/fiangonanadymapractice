@@ -17,21 +17,19 @@ export function useFetchData(url, searchParams = null) {
                     const queryParams = new URLSearchParams();
 
                     for (const [key, value] of Object.entries(searchParams)) {
+                        if (value === '') continue;
+
                         if (key === 'trancheAge' && Array.isArray(value)) {
                             value.forEach(age => queryParams.append('trancheAge[]', age));
-                        }else if (key === 'orderByName') {
-                            fullUrl += `order[prenom]=${value}`;
-                        } 
-                        else if (value !== '') {
-                            fullUrl += `&${key}=${value}`;
-                            // queryParams.append(key, value);
+                        } else if (key === 'orderByName') {
+                            queryParams.append('order[prenom]', value);
+                        } else {
+                            queryParams.append(key, value);
                         }
                     }
 
-                    const queryString = queryParams.toString();
-                    if (queryString) {
-                        fullUrl += `&?${queryString}`;
-                    }
+                    fullUrl += queryParams.toString();
+                   
                 }
 
                 const response = await fetch(fullUrl);
@@ -63,70 +61,4 @@ export function useFetchData(url, searchParams = null) {
 
     return { data, loading, error };
 
-}
-
-export const useUpdateMambra = async (mambraData, id = null) => {
-
-    const url = id
-        ? `http://localhost:8000/apip/mambras/${id}`
-        : 'http://localhost:8000/apip/mambras';
-
-    const method = id ? 'PUT' : 'POST';
-
-    try {
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-                // Add any other headers you need, like authorization
-            },
-            body: JSON.stringify(mambraData)
-        });
-
-        if (!response.ok) {
-            const errorBody = await response.text();
-            console.error('Response status:', response.status);
-            console.error('Response body:', errorBody);
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-
-        return data;
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        throw error;
-    }
-}
-
-
-export const useDeleteMambra = async (id) => {
-
-    const url = `http://localhost:8000/apip/mambras/${id}`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                // Add any other headers you need, like authorization
-            },
-            body: JSON.stringify(mambraData)
-        });
-
-        if (!response.ok) {
-            const errorBody = await response.text();
-            console.error('Response status:', response.status);
-            console.error('Response body:', errorBody);
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        console.log("data");
-        console.log(data);
-        // return data;
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        throw error;
-    }
 }

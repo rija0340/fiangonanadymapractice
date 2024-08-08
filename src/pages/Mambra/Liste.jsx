@@ -3,21 +3,9 @@ import { useFetchData } from "../../hooks/useFetchData";
 import { useState, useEffect } from "react";
 import ExportPDF from "../../utils/ExportPDF";
 
+import {renderBaptiseRadio2} from "./utils/Filtres";
+
 export default function Liste() {
-  //gender filter 
-  // const [filters, setFilters] = useState({
-  //   gender: {
-  //     all: true,
-  //     male: false,
-  //     female: false,
-  //   },
-  //   baptism: {
-  //     all: true,
-  //     baptised: false,
-  //     unbaptised: false,
-  //   },
-  //   search: ""
-  // })
 
   const [filters, setFilters] = useState({
     nom: "",

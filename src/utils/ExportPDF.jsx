@@ -1,7 +1,10 @@
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
-const ExportPDF = (data ) => {
+const ExportPDF = (headers, data, title) => {
+
+  console.log("headers,data, title");
+  console.log(headers,data, title);
 
         const unit = "pt";
         const size = "A4"; // Use A1, A2, A3 or A4
@@ -12,15 +15,10 @@ const ExportPDF = (data ) => {
     
         doc.setFontSize(15);
     
-        const title = "title";
-        const headers = [["Nom", "Prénom"]];
-    
-        const liste = data.map(elt=> [elt.nom, elt.prenom,]);
-    
         let content = {
           startY: 50,
           head: headers,
-          body: liste
+          body: data
         };
     
         doc.text(title, marginLeft, 40);

@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Base from "./pages/Layout/Base";
 import Homepage from "./pages/Homepage/Homepage";
-import Liste from "./pages/Mambra/Liste";
+import ListeMambra from "./pages/Mambra/ListeMambra";
+import ListeFamille from "./pages/Mambra/ListeFamille";
 import BaseMambra from "./pages/Mambra/BaseMambra";
 import Nouveau from "./pages/Mambra/Nouveau";
 import Edit from "./pages/Mambra/Edit";
@@ -21,8 +22,12 @@ export const router = createBrowserRouter([
                 element: <BaseMambra />,
                 children: [
                     {
-                        path: '/mambra/liste',
-                        element: <Liste />,
+                        path: '/mambra/liste-mambra',
+                        element: <ListeMambra />,
+                    },
+                    {
+                        path: '/mambra/liste-famille',
+                        element: <ListeFamille />,
                     },
                     {
                         path: '/mambra/nouveau',

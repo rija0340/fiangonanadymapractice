@@ -57,7 +57,7 @@ export function useFetchData(url, searchParams = null) {
 
         fetchData();
         return () => (cancel = true);
-    }, [searchParams])
+    }, [searchParams,url])
 
     return { data, loading, error };
 

@@ -56,68 +56,118 @@
 
   const renderGenderRadio = () => (
     <>
-      <div className="form-check">
-        <input className="form-check-input" type="radio" name="sexe" id="allsexe" value="" onChange={handleFilterGenderChange} />
-        <label className="form-check-label" htmlFor="allsexe">
-          Tous
-        </label>
+      <div className="mb-2">
+        <div className="form-check">
+          <input 
+            className="form-check-input" 
+            type="radio" 
+            name="sexe" 
+            id="allsexe" 
+            value="" 
+            onChange={handleFilterGenderChange} 
+          />
+          <label className="form-check-label" htmlFor="allsexe">
+            Tous
+          </label>
+        </div>
+        <div className="form-check">
+          <input 
+            className="form-check-input" 
+            type="radio" 
+            name="sexe" 
+            id="masculin" 
+            value="masculin" 
+            onChange={handleFilterGenderChange} 
+          />
+          <label className="form-check-label" htmlFor="masculin">
+            Masculin
+          </label>
+        </div>
+        <div className="form-check">
+          <input 
+            className="form-check-input" 
+            type="radio" 
+            name="sexe" 
+            id="feminin" 
+            value="feminin" 
+            onChange={handleFilterGenderChange} 
+          />
+          <label className="form-check-label" htmlFor="feminin">
+            Féminin
+          </label>
+        </div>
       </div>
-      <div className="form-check">
-        <input className="form-check-input" type="radio" name="sexe" id="masculin" value="masculin" onChange={handleFilterGenderChange} />
-        <label className="form-check-label" htmlFor="masculin">
-          Masculin
-        </label>
-      </div>
-      <div className="form-check">
-        <input className="form-check-input" type="radio" name="sexe" id="feminin" value="feminin" onChange={handleFilterGenderChange} />
-        <label className="form-check-label" htmlFor="feminin">
-          Feminin
-        </label>
-      </div>
-
     </>
-  )
-
+  );
+  
   const renderBaptiseRadio = () => (
     <>
-      <div className="form-check">
-        <input className="form-check-input" type="radio" name="baptise" id="allmixed" value="" onChange={handleFilterBaptiseChange} />
-        <label className="form-check-label" htmlFor="allmixed">
-          Tous
-        </label>
+      <div className="mb-2">
+        <div className="form-check">
+          <input 
+            className="form-check-input" 
+            type="radio" 
+            name="baptise" 
+            id="allmixed" 
+            value="" 
+            onChange={handleFilterBaptiseChange} 
+          />
+          <label className="form-check-label" htmlFor="allmixed">
+            Tous
+          </label>
+        </div>
+        <div className="form-check">
+          <input 
+            className="form-check-input" 
+            type="radio" 
+            name="baptise" 
+            id="baptise" 
+            value="1" 
+            onChange={handleFilterBaptiseChange} 
+          />
+          <label className="form-check-label" htmlFor="baptise">
+            Baptisé
+          </label>
+        </div>
+        <div className="form-check">
+          <input 
+            className="form-check-input" 
+            type="radio" 
+            name="baptise" 
+            id="unbaptise" 
+            value="0" 
+            onChange={handleFilterBaptiseChange} 
+          />
+          <label className="form-check-label" htmlFor="unbaptise">
+            Non baptisé
+          </label>
+        </div>
       </div>
-      <div className="form-check">
-        <input className="form-check-input" type="radio" name="baptise" id="baptise" value="1" onChange={handleFilterBaptiseChange} />
-        <label className="form-check-label" htmlFor="baptise">
-          Baptisé
-        </label>
-      </div>
-      <div className="form-check">
-        <input className="form-check-input" type="radio" name="baptise" id="unbaptise" value="0" onChange={handleFilterBaptiseChange} />
-        <label className="form-check-label" htmlFor="unbaptise">
-          Non baptisé
-        </label>
-      </div>
-
     </>
-  )
+  );
+  
 
   const renderTrancheAgeFilter = () => (
     <>
-      <div>
+      <div className="mb-3">
         {trancheAgeOptions.map((option) => (
-          <label key={option.value}>
+          <div className="form-check" key={option.value}>
             <input
+              className="form-check-input"
               type="checkbox"
+              id={`trancheAge-${option.value}`}
               value={option.value}
               onChange={handleTrancheAgeChange}
-            />{" "}
-            {option.label}
-          </label>
+            />
+            <label className="form-check-label" htmlFor={`trancheAge-${option.value}`}>
+              {option.label}
+            </label>
+          </div>
         ))}
       </div>
     </>
-  )
+  );
+  
 
   const renderOrderByPrenom = () => (
 

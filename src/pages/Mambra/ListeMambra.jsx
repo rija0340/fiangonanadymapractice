@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useFetchData } from "../../hooks/useFetchData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ExportPDF from "../../utils/ExportPDF";
 import ExportModal from "../../utils/modals/ExportModal";
 import Filtres from "./utils/Filtres";
@@ -14,7 +14,7 @@ export default function ListeMambra() {
     sexe: "",
     baptise: "",
     trancheAge: [],
-    orderByName : ""
+    orderByName: ""
   });
 
 
@@ -23,7 +23,7 @@ export default function ListeMambra() {
   const [toDisplay, setToDisplay] = useState('mambra');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [headerExportPdf, setHeaderExportPdf] = useState([]);
-  const [modalContent, setModalContent] = useState({ title: '', body: '' }); 
+  const [modalContent, setModalContent] = useState({ title: '', body: '' });
   const [selectedId, setSelectedId] = useState(null);
   const { data: mambra, loading: loading, error: error } = useFetchData(selectedId ? `http://localhost:8000/apip/mambras/${selectedId}` : null);
 
@@ -32,8 +32,8 @@ export default function ListeMambra() {
     setSelectedId(id);
 
     setModalContent({
-      title : 'Details mambra',
-      body : templateShowMambra(mambra)
+      title: 'Details mambra',
+      body: templateShowMambra(mambra)
     })
 
     setModalIsOpen(true);
@@ -55,7 +55,7 @@ export default function ListeMambra() {
             <NavLink className="btn btn-outline-success" to={`../../mambra/${item.id}/edit`}>
               <i className="fas fa-edit me-1"></i> Edit
             </NavLink>
-            <button type="button"  onClick={()=>handleShowMambra(item.id)} className="btn btn-outline-primary">
+            <button type="button" onClick={() => handleShowMambra(item.id)} className="btn btn-outline-primary">
               <i className="fas fa-eye me-1"></i> Show
             </button>
             <NavLink className="btn btn-outline-danger" to={`../../mambra/${item.id}/delete`}>
@@ -73,30 +73,30 @@ export default function ListeMambra() {
     const { nom, prenom, sexe, dateNaissance, familleId, baptise, trancheAge } = mambraObj;
     return (
       <div className="container mt-4">
-          
-          <div className="">
-            <dl className="row">
-              <dt className="col-sm-4">Nom:</dt>
-              <dd className="col-sm-8">{nom}</dd>
-  
-              <dt className="col-sm-4">Prénom:</dt>
-              <dd className="col-sm-8">{prenom}</dd>
-  
-              <dt className="col-sm-4">Sexe:</dt>
-              <dd className="col-sm-8">{sexe === 'masculin' ? 'Masculin' : 'Féminin'}</dd>
-  
-              <dt className="col-sm-4">Date de Naissance:</dt>
-              <dd className="col-sm-8">{formatDateToFr(dateNaissance)}</dd>
-  
-              <dt className="col-sm-4">Famille ID:</dt>
-              <dd className="col-sm-8">{familleId}</dd>
-  
-              <dt className="col-sm-4">Baptisé:</dt>
-              <dd className="col-sm-8">{baptise ? 'Oui' : 'Non'}</dd>
-  
-              <dt className="col-sm-4">Tranche d’Âge:</dt>
-              <dd className="col-sm-8">{trancheAge}</dd>
-            </dl>
+
+        <div className="">
+          <dl className="row">
+            <dt className="col-sm-4">Nom:</dt>
+            <dd className="col-sm-8">{nom}</dd>
+
+            <dt className="col-sm-4">Prénom:</dt>
+            <dd className="col-sm-8">{prenom}</dd>
+
+            <dt className="col-sm-4">Sexe:</dt>
+            <dd className="col-sm-8">{sexe === 'masculin' ? 'Masculin' : 'Féminin'}</dd>
+
+            <dt className="col-sm-4">Date de Naissance:</dt>
+            <dd className="col-sm-8">{formatDateToFr(dateNaissance)}</dd>
+
+            <dt className="col-sm-4">Famille ID:</dt>
+            <dd className="col-sm-8">{familleId}</dd>
+
+            <dt className="col-sm-4">Baptisé:</dt>
+            <dd className="col-sm-8">{baptise ? 'Oui' : 'Non'}</dd>
+
+            <dt className="col-sm-4">Tranche d’Âge:</dt>
+            <dd className="col-sm-8">{trancheAge}</dd>
+          </dl>
           <div className="">
             <button className="btn btn-primary mr-2">Edit</button>
             <button className="btn btn-danger">Delete</button>
@@ -105,11 +105,11 @@ export default function ListeMambra() {
       </div>
     );
   }
-  
+
   const listeFamille = familles.map((item) => {
     // Filter mambras to include only those that belong to the current family
     const relatedMambras = mambras.filter((mambra) => mambra.familleId === item.id);
-  
+
     return (
       <tr key={item.id}>
         <td className="align-middle">
@@ -133,9 +133,9 @@ export default function ListeMambra() {
       </tr>
     );
   });
-  
 
-  const templateBodyModalExport = () =>  {
+
+  const templateBodyModalExport = () => {
     // Check if mambras exists and has at least one item
     if (mambras && mambras.length > 0) {
       const properties = Object.keys(mambras[0]);
@@ -143,11 +143,11 @@ export default function ListeMambra() {
       const listItems = filteredItems.map(item => (
         <>
           <div className="form-check">
-            <input 
-              className="form-check-input" 
-              type="checkbox" 
-              id={`checkbox-${item}`} 
-              value={item} 
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id={`checkbox-${item}`}
+              value={item}
               onChange={handleSelectionHeaderPdfChange}
             />
             <label className="form-check-label" htmlFor={`checkbox-${item}`}>
@@ -157,20 +157,20 @@ export default function ListeMambra() {
         </>
       ));
       return (
-        <> 
+        <>
           <p>Veuillez choisir les entêtes à exporter</p>
-            {listItems}
+          {listItems}
           <div className="mt-3 text-center">
             <button onClick={handleExportPDF} className="btn btn-primary" > Exporter </button>
           </div>
         </>
       );
     }
-  
+
     // Return a loading message or an empty fragment if mambras is undefined or empty
     return <p>Loading...</p>;
   }
-  
+
   const handleSearch = (e) => {
     const search = e.target.value.toLowerCase();
     setFilters(prevNameFilter => {
@@ -183,50 +183,63 @@ export default function ListeMambra() {
 
 
 
-const handleOpenModalExportPDF = () => {
-  
-  setHeaderExportPdf([]);
-  setModalContent(
-    {
-      title: "Entête pdf à exporter",
-      body : templateBodyModalExport()
-    }
-  );
-  setModalIsOpen(true);
-  
-}
+  const handleOpenModalExportPDF = () => {
 
-const handleSelectionHeaderPdfChange = (event) => {
-
-  const { value, checked } = event.target;
-
-  setHeaderExportPdf(prevItems => 
-    checked 
-      ? [...prevItems, value] 
-      : prevItems.filter(item => item !== value)
-  );
-}
-
-const handleExportPDF = () => {
-
-  let headers = headerExportPdf;
-
-  let liste = mambras.map(elt => 
-    headers.map(header => {
-      if(header == "dateNaissance"){
-        return formatDateToFr(elt[header]);
-      }else{
-       return elt[header];
+    setHeaderExportPdf([]);
+    setModalContent(
+      {
+        title: "Entête pdf à exporter",
+        body: templateBodyModalExport()
       }
-    })
-  );
+    );
+    setModalIsOpen(true);
 
-  ExportPDF([headers],liste,"Liste des mambra");
-}
+  }
 
-const handleCloseModal = () =>{
-  setModalIsOpen(false)
-}
+  // const handleSelectionHeaderPdfChange = (event) => {
+
+  //   const { value, checked } = event.target;
+
+  //   setHeaderExportPdf(prevItems =>
+  //     checked
+  //       ? [...prevItems, value]
+  //       : prevItems.filter(item => item !== value)
+  //   );
+  // }
+  const headerExportPdfRef = useRef([]);
+
+  const handleSelectionHeaderPdfChange = (event) => {
+    const { value, checked } = event.target;
+
+    headerExportPdfRef.current = checked
+      ? [...headerExportPdfRef.current, value]
+      : headerExportPdfRef.current.filter(item => item !== value);
+  };
+
+
+
+  const handleExportPDF = () => {
+
+    // let headers = headerExportPdf;
+
+    let headers = headerExportPdfRef.current;
+
+    let liste = mambras.map(elt =>
+      headers.map(header => {
+        if (header == "dateNaissance") {
+          return formatDateToFr(elt[header]);
+        } else {
+          return elt[header];
+        }
+      })
+    );
+
+    ExportPDF([headers], liste, "Liste des mambra");
+  }
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false)
+  }
 
 
   return (
@@ -236,40 +249,40 @@ const handleCloseModal = () =>{
       <div className="row">
         <div className="col-md-3 ">
 
-        <div className="menu-lateral border border-danger p-3 rounded">
-          <h3 className="mb-4">Catégories</h3>
-          <ul className="list-unstyled">
-            <li
-              onClick={() => setToDisplay('mambra')}
-              className={`cursor-pointer ${toDisplay === 'mambra' ? 'active text-danger font-weight-bold' : ''}`}
-            >
-              Mambra
-            </li>
-            <li
-              onClick={() => setToDisplay('famille')}
-              className={`cursor-pointer ${toDisplay === 'famille' ? 'active text-danger font-weight-bold' : ''}`}
-            >
-              Familles
-            </li>
-            <li className="cursor-pointer">Mambra par famille</li>
-          </ul>
+          <div className="menu-lateral border border-danger p-3 rounded">
+            <h3 className="mb-4">Catégories</h3>
+            <ul className="list-unstyled">
+              <li
+                onClick={() => setToDisplay('mambra')}
+                className={`cursor-pointer ${toDisplay === 'mambra' ? 'active text-danger font-weight-bold' : ''}`}
+              >
+                Mambra
+              </li>
+              <li
+                onClick={() => setToDisplay('famille')}
+                className={`cursor-pointer ${toDisplay === 'famille' ? 'active text-danger font-weight-bold' : ''}`}
+              >
+                Familles
+              </li>
+              <li className="cursor-pointer">Mambra par famille</li>
+            </ul>
 
-          <h3 className="mt-5 mb-4">Filtres <span className="badge bg-danger">{mambras.length}</span></h3>
-          <div>
-            <Filtres setFilters={setFilters} />
-            <button className="btn btn-success mt-3 w-100" onClick={handleOpenModalExportPDF}>
-              Exporter liste en PDF
-            </button>
+            <h3 className="mt-5 mb-4">Filtres <span className="badge bg-danger">{mambras.length}</span></h3>
+            <div>
+              <Filtres setFilters={setFilters} />
+              <button className="btn btn-success mt-3 w-100" onClick={handleOpenModalExportPDF}>
+                Exporter liste en PDF
+              </button>
+            </div>
           </div>
-        </div>
 
         </div>
         <div className="col-md-9">
 
-                <div class="d-flex justify-content-end">
-                  <div class="p-2 bd-highlight">Recherche</div>
-                  <div class="p-2 bd-highlight"><input type="text" onChange={handleSearch} className="form-control" /></div>
-                </div>
+          <div class="d-flex justify-content-end">
+            <div class="p-2 bd-highlight">Recherche</div>
+            <div class="p-2 bd-highlight"><input type="text" onChange={handleSearch} className="form-control" /></div>
+          </div>
           {toDisplay == 'mambra' ?
             (
               <>

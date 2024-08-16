@@ -9,6 +9,7 @@ export function useFetchData(url, searchParams = null) {
     useEffect(() => {
         let cancel = false;
         async function fetchData() {
+            console.log('fetching data');
             setLoading(true);
             try {
                 let fullUrl = url;

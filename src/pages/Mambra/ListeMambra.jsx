@@ -27,18 +27,23 @@ export default function ListeMambra() {
   const [selectedId, setSelectedId] = useState(null);
   const { data: mambra, loading: loading, error: error } = useFetchData(selectedId ? `http://localhost:8000/apip/mambras/${selectedId}` : null);
 
+  useEffect(() => {
+    if (selectedId && mambra ) {
+      setModalContent({ title: '', body: '' });
+      setModalContent({
+        title: 'Details mambra',
+        body: templateShowMambra(mambra)
+      });
+      setModalIsOpen(true);
+    }
+  }, [selectedId, mambra]);
+
   const handleShowMambra = (id) => {
     console.log("id : " + id);
     setSelectedId(id);
-
-    setModalContent({
-      title: 'Details mambra',
-      body: templateShowMambra(mambra)
-    })
-
-    setModalIsOpen(true);
-
+    // We don't set modal content or open the modal here anymore
   };
+
   const listeMambra = mambras.map((item) => {
     return (
       <tr key={item.id}>
@@ -238,7 +243,9 @@ export default function ListeMambra() {
   }
 
   const handleCloseModal = () => {
-    setModalIsOpen(false)
+    setModalIsOpen(false);
+    setSelectedId(null);
+    
   }
 
 

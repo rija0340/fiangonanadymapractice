@@ -11,7 +11,7 @@ const Nouveau = () => {
       const newMambra = await useUpdateResource(data,url);
       console.log('New Mambra created:', newMambra);
       toast.success('User created successfully!');
-      navigate("/mambra/liste");
+      navigate("/mambra/liste-mambra");
     } catch (error) {
       // toast.error('Error creating user');
       console.log(error);

@@ -14,7 +14,7 @@ const Edit = () => {
         try {
             const editedMambra = await useUpdateResource(data,url, id);
             toast.success('User modified successfully!');
-            navigate("/mambra/liste");
+            navigate("/mambra/liste-mambra");
             // Handle successful creation (e.g., show a success message, redirect, etc.)
         } catch (error) {
             // Handle errors (e.g., show an error message)

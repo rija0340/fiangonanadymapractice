@@ -1,6 +1,7 @@
 import { Outlet, NavLink,useLocation } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import { useEffect, useState } from 'react';
+import styles from  './BaseMambra.module.scss';
 
 const Base = () => {
     const location = useLocation();
@@ -32,12 +33,29 @@ const Base = () => {
     return (
         <>
             <div className='text-center'><h1>Mambra</h1></div>
-            <div className="d-flex justify-content-center bd-highlight mb-3">
-                <div className="p-2 bd-highlight"><NavLink to='/mambra'>Accueil</NavLink></div>
-                <div className="p-2 bd-highlight"><NavLink to='/mambra/liste-mambra'>Liste mambra</NavLink></div>
-                <div className="p-2 bd-highlight"><NavLink to='/mambra/liste-famille'>Liste par famille</NavLink></div>
-                <div className="p-2 bd-highlight"><NavLink to='/mambra/nouveau'>Nouveau</NavLink></div>
+
+            <div className="d-flex justify-content-center  mb-3">
+            <ul class="nav ">
+            <li class="nav-item">
+                <div className="p-2 "><NavLink className='nav-link' to='/mambra'>Accueil</NavLink></div>
+            </li>
+                <li class="nav-item">
+                <div className="p-2 "><NavLink className='nav-link' to='/mambra/liste-mambra'>Liste mambra</NavLink></div>
+                </li>
+                <li class="nav-item">
+                <div className="nav-link p-2 "><NavLink className='nav-link' to='/mambra/liste-famille'>Liste par famille</NavLink></div>
+                </li>
+                
+                <li class='nav-item dropdown'>
+                    <a class={'nav-link dropdown-toggle' + styles.dropdownNouveau} data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Nouveau</a>
+                    <ul class="dropdown-menu">
+                        <li><NavLink className="dropdown-item" to='/mambra/nouveau'>Nouveau Mambra</NavLink></li>
+                        <li><NavLink className="dropdown-item" to='/mambra/nouvelle-famille'>Nouvelle Famille</NavLink></li>
+                    </ul>
+                </li>
+            </ul>
             </div>
+           
        
             {/* Dashboard */}
             {location.pathname == '/mambra' &&  <>

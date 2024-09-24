@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 
-export const useUpdateResource = async (mambraData, url ,id = null) => {
+export const useUpdateResource = async (mambraData, baseUrl ,id = null) => {
+
+    console.log("mambraData : " + JSON.stringify(mambraData));
+    console.log("url : " + baseUrl);
+    console.log("id : " + id);
 
     const method = id ? 'PUT' : 'POST';
+    const url = id ? baseUrl+'/'+id : baseUrl;
 
     try {
         const response = await fetch(url, {

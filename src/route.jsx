@@ -7,6 +7,7 @@ import BaseMambra from "./pages/Mambra/BaseMambra";
 import Nouveau from "./pages/Mambra/Nouveau";
 import Edit from "./pages/Mambra/Edit";
 import Delete from "./pages/Mambra/Delete";
+import NewFamille from "./pages/Mambra/NewFamille";
 
 export const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
                     {
                         path: '/mambra/nouveau',
                         element: <Nouveau />,
+                    },
+                    {
+                        path: '/mambra/nouvelle-famille',
+                        element: <NewFamille />,
                     },
                     {
                         path: '/mambra/:id/edit',

@@ -13,7 +13,7 @@ const schema = yup.object().shape({
 
 const FamilleForm = ({ handleSubmitData, id = null }) => {
 
-    const { data: familles, loading: loadingFamille, error: errorFamille } = useFetchData("http://localhost:8000/apip/familles");
+    // const { data: familles, loading: loadingFamille, error: errorFamille } = useFetchData("http://localhost:8000/apip/familles");
 
     const { register, handleSubmit, formState: { errors }, reset,control } = useForm({
         resolver: yupResolver(schema),
@@ -23,11 +23,12 @@ const FamilleForm = ({ handleSubmitData, id = null }) => {
     });
 
     const { data: famille, loading: loading, error: error } = useFetchData(id ? `http://localhost:8000/apip/familles/${id}` : null);
-    // useEffect(() => {
-    //     if (!Array.isArray(mambra)) {
-    //         reset(mambra);
-    //     }
-    // }, [mambra, reset]);
+    useEffect(() => {
+        if (!Array.isArray(famille)) {
+            reset(famille);
+        }
+    }, [famille, reset]);
+
 
     return (
         <form onSubmit={handleSubmit(handleSubmitData)}>
@@ -36,8 +37,9 @@ const FamilleForm = ({ handleSubmitData, id = null }) => {
                 <input className='form-control' id="nom" {...register('nom')} />
                 {errors.nom && <span>{errors.nom.message}</span>}
             </div>
-
-            <button className='btn btn-success' type="submit">Submit</button>
+            <div className='mt-2'>
+                <button className='btn btn-success' type="submit">Submit</button>
+            </div>
         </form>
     );
 };

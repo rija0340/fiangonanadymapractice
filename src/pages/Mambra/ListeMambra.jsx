@@ -121,7 +121,12 @@ export default function ListeMambra() {
           <strong>{item.nom}</strong>
         </td>
         <td className="align-middle text-center">
-          <span className="badge bg-info text-white">{relatedMambras.length}</span>
+                <NavLink className="btn btn-sm btn-outline-success" to={`../../mambra/famille/${item.id}/edit`}>
+                  <i className="fas fa-edit me-1"></i> Edit
+                </NavLink>
+        </td>
+        <td className="align-middle text-center">
+          <span className="badge bg-info text-white" >{relatedMambras.length}</span>
         </td>
         <td>
           <ul className="list-unstyled mb-0">
@@ -315,6 +320,7 @@ export default function ListeMambra() {
                   <thead className="thead-dark">
                     <tr>
                       <th scope="col">Nom</th>
+                      <th scope="col">actions famille</th>
                       <th scope="col">Nombre membres</th>
                       <th scope="col">membres</th>
                     </tr>

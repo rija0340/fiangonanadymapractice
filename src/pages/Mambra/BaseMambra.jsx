@@ -42,9 +42,6 @@ const Base = () => {
                 <li class="nav-item">
                 <div className="p-2 "><NavLink className='nav-link' to='/mambra/liste-mambra'>Liste mambra</NavLink></div>
                 </li>
-                <li class="nav-item">
-                <div className="nav-link p-2 "><NavLink className='nav-link' to='/mambra/liste-famille'>Liste par famille</NavLink></div>
-                </li>
                 
                 <li class='nav-item dropdown'>
                     <a class={'nav-link dropdown-toggle' + styles.dropdownNouveau} data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Nouveau</a>
